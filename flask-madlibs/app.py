@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 from flask_debugtoolbar import DebugToolbarExtension
 
-from stories import silly_story, excited_story
+from stories import Story, silly_story, excited_story
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "secret"
@@ -13,14 +13,32 @@ TEMPLATES = {
     'excited': excited_story
 }
 
+@app.get('/create-template')
+def show_options():
+    """make your very own template on this site"""
+    return render_template('create-template.html')
+
 @app.get('/home')
 def show_home():
+    """displays a dropdown of possible templates to choose"""
     #display dropdown menu that selects between silly_story +
     # excited_story
-    madlib_templates = ['silly', 'excited']
+
+    #check request.args for which checkboxes were chosen
+    #then create new story instance based off args
+    words = []
+    for (key, val) in request.args.items():
+        if key != 'story-text':
+            words.append(key)
+    #add new story to templates
+    text = request.args['story-text']
+    new_story = Story(words, text)
+    TEMPLATES['new'] = new_story
+
+    #madlib_templates = ['silly', 'excited', 'new']
 
     return render_template('home.html',
-                           story_templates = madlib_templates)
+                           story_templates = TEMPLATES.keys())
 
 @app.get('/questions')
 def load_questions():
