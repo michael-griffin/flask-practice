@@ -13,10 +13,10 @@ app = Flask(__name__)
 def show_welcome():
     return "<h1>welcome</h1>"
 
-@app.get('/home')
+@app.get('/welcome/home')
 def show_home():
     return "<h1>welcome home</h1>"
 
-@app.get('/back')
+@app.get('/welcome/back')
 def show_back():
     return "<h1>welcome back</h1>"
