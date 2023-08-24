@@ -4,5 +4,14 @@
 
 
 {% block content %}
-<!--dropdown list goes here-->
+<form action="/questions">
+  <label for="template_select"></label>
+
+  <select name="story_template">
+    {% for template in story_templates%}
+    <option value="{{ template }}">{{ template }}</option>
+    {% endfor %}
+  </select>
+  <button type="submit">Submit form</button>
+</form>
 {% endblock %}
